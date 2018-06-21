@@ -127,7 +127,7 @@ class FursuitTable extends Component {
         return (
             <div className={classes.badgeContainer}>
                 {this.props.fursuits.slice(0,18).map((item, key) => (
-                    <OptionalAnimation animatoin={<Grow key={key} in={(this.props.stageProgress - (key / 2) > 0)} />}>
+                    <OptionalAnimation animation={<Grow key={key} in={(this.props.stageProgress - (key / 2) > 0)} />}>
                         <div className={classes.badgeWrapper}>
                             <Paper className={classes.badge}>
                                 <div className={classes.portraitWrapper}>

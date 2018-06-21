@@ -121,7 +121,7 @@ class ScoreboardScreenPage extends Component {
 
     componentWillMount() {
         if (this.props.location.search.indexOf("skip-animation") > -1) {
-            this.setState({skipAnimation: true});
+            this.setState({ skipAnimation: true });
         }
 
 
@@ -192,7 +192,7 @@ class ScoreboardScreenPage extends Component {
                 <div className={classes.titleRight}>
                     Collect'em All! - Leaderboard<br />
                     <div className={classes.subTitle}>Join the game! - <b>Go to app.eurofurence.org</b></div>
-                    
+
                 </div>
 
                 {this.state.stage === 0 ? <div>
@@ -251,11 +251,11 @@ class ScoreboardScreenPage extends Component {
 
 
 
-                <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
-                    {this.state.skipAnimation || this.state.stageProgress === 0 ? <div /> :
+                {this.state.skipAnimation || this.state.stageProgress === 0 ? null :
+                    <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
                         <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} />
-                    }
-                </OptionalAnimation>
+                    </OptionalAnimation>
+                }
             </div>
         );
     }
