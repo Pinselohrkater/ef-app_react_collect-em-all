@@ -35,7 +35,7 @@ const styles = theme => ({
     badgeContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     badgeWrapper: {
         width: '15vw',
@@ -53,7 +53,7 @@ const styles = theme => ({
     portraitWrapper: {
         height: '21vh',
         position: 'relative',
-        backgroundColor: '#E0E0E0'
+        backgroundColor: theme.palette.primary.main
     },
     image: {
         position: 'absolute',
@@ -63,6 +63,7 @@ const styles = theme => ({
     },
     rank: {
         ...theme.typography.body1,
+        color: theme.palette.getContrastText( theme.palette.primary.main ),
         display: 'block',
         width: '5.3vh',
         height: '5.3vh',
@@ -84,6 +85,8 @@ const styles = theme => ({
     },
     catchesText: {
         ...theme.typography.caption,
+        color: theme.palette.getContrastText( theme.palette.primary.main ),
+        opacity: 0.7,
         textAlign: 'center',
         verticalAlign: 'middle',
         lineHeight: '2vh',

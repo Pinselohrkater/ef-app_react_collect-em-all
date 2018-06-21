@@ -43,7 +43,7 @@ const styles = theme => ({
         width: '100vw',
         height: '100vh',
         position: 'absolute',
-        overflow: 'hidden'
+        overflow: 'hidden',
         // backgroundImage: 'url("https://www.eurofurence.org/EF24/design/teaser.jpg")',
         // backgroundPosition: 'left center',
         // backgroundSize: 'cover',
@@ -51,26 +51,51 @@ const styles = theme => ({
     },
     paper: {
     },
+    titleLeft: {
+        position: 'absolute',
+        left: '5vw',
+        width: '42.5vw',
+        top: '3vh',
+        height: '5vh',
+        ...theme.typography.title,
+        fontSize: '4vh',
+        fontWeight: '100',
+    },
+    titleRight: {
+        position: 'absolute',
+        textAlign: 'right',
+        right: '5vw',
+        width: '42.5vw',
+        top: '3vh',
+        height: '5vh',
+        ...theme.typography.title,
+        fontWeight: '100',
+        fontSize: '3vh',
+        lineHeight: '2.5vh'
+    },
+    subTitle: {
+        fontSize: '0.6em'
+    },
     columnLeft: {
         position: 'absolute',
         left: '5vw',
         width: '42.5vw',
-        top: '5vh',
-        bottom: '5vh',
+        top: '10vh',
+        bottom: '2vh',
     },
     columnRight: {
         position: 'absolute',
         left: '52.5vw',
         width: '42.5vw',
-        top: '5vh',
-        bottom: '5vh',
+        top: '10vh',
+        bottom: '2vh',
     },
     columnWide: {
         position: 'absolute',
         left: '5vw',
         right: '5vw',
-        top: '5vh',
-        bottom: '5vh',
+        top: '10vh',
+        bottom: '2vh',
     },
     heading: {
         ...theme.typography.title,
@@ -90,19 +115,20 @@ class ScoreboardScreenPage extends Component {
 
     state = {
         stageProgress: 30,
-        stage: 1
+        stage: 0
     }
 
     constructor(props) {
         super(props);
         props.scoreboardActions.updateScoreboard();
         props.uiActions.setBorderless(true);
+        props.uiActions.setLightTheme();
     }
 
 
     componentWillMount() {
         let mockPlayerList = [];
-        for (var i = 0; i < 40; i++) {
+        for (var i = 0; i < 80; i++) {
             mockPlayerList.push({
                 Rank: i + 1,
                 Name: "Player " + (i + 1),
@@ -111,7 +137,7 @@ class ScoreboardScreenPage extends Component {
         }
 
         let mockFursuitList = [];
-        for (var i = 0; i < 40; i++) {
+        for (var i = 0; i < 80; i++) {
             mockFursuitList.push({
                 Rank: i + 1,
                 Name: "Fursuit " + (i + 1),
@@ -141,10 +167,10 @@ class ScoreboardScreenPage extends Component {
         if (state.stageProgress > 200) {
             state.stageProgress = 0;
             state.stage++;
-            //this.props.scoreboardActions.updateScoreboard();
         }
         if (state.stage > 1) {
             state.stage = 0;
+            this.props.scoreboardActions.updateScoreboard();
         }
         this.setState(state);
     }
@@ -153,10 +179,9 @@ class ScoreboardScreenPage extends Component {
         const { classes } = this.props;
 
         return (
-            <Grow in={!this.props.scoreboard.isBusy}>
-                <div className={classes.layout}>
+            <div className={classes.layout}>
 
-                    {/* <div className={classes.heading}>Leaderboard</div>
+                {/* <div className={classes.heading}>Leaderboard</div>
 
                     {JSON.stringify(this.state)}
 
@@ -166,49 +191,70 @@ class ScoreboardScreenPage extends Component {
                         onClick={() => this.props.scoreboardActions.updateScoreboard()}
                     >Back</Button> */}
 
-                    {this.state.stage === 0 ? <div>
+                <div className={classes.titleRight}>
+                    Collect'em All! - Leaderboard<br />
+                    <div className={classes.subTitle}>Join the game! - <b>Go to app.eurofurence.org</b></div>
+                </div>
 
-                        <div className={classes.columnLeft}>
-                            <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
-                                <Paper elevation={10} className={classes.paper}>
-                                    <PlayerTable players={this.state.mockPlayerList.slice(0, 10)}
-                                        stageProgress={this.state.stageProgress - 10}
-                                    />
-                                </Paper>
-                            </Slide>
-                        </div>
+                {this.state.stage === 0 ? <div>
+
+                    <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                        <div className={classes.titleLeft}>
+                            Top Players
+                            </div>
+                    </Slide>
+
+
+                    <div className={classes.columnLeft}>
+                        <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                            <Paper elevation={10} className={classes.paper}>
+                                <PlayerTable players={this.props.scoreboard.playerParticipations.slice(0, 10)}
+                                    stageProgress={this.state.stageProgress - 10}
+                                />
+                            </Paper>
+                        </Slide>
+                    </div>
+                    {this.props.scoreboard.playerParticipations.length > 10 ? <div>
+
                         <div className={classes.columnRight}>
                             <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'left'}>
                                 <Paper elevation={10} className={classes.paper}>
-                                    <PlayerTable players={this.state.mockPlayerList.slice(10, 20)}
+                                    <PlayerTable players={this.props.scoreboard.playerParticipations.slice(10, 20)}
                                         stageProgress={this.state.stageProgress - 18}
                                     />
                                 </Paper>
                             </Slide>
                         </div>
-
                     </div> : null}
 
-                    {this.state.stage === 1 ? <div>
-                        <Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195}>
+                </div> : null}
 
-                            <div className={classes.columnWide}>
-                                <FursuitTable fursuits={this.state.mockFursuitList.slice(0, 20)}
-                                    stageProgress={this.state.stageProgress - 10}
-                                />
+                {this.state.stage === 1 ? <div>
+
+
+                    <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                        <div className={classes.titleLeft}>
+                            Top Creatures
                             </div>
-                        </Grow>
-
-                    </div> : null}
-
+                    </Slide>
 
                     <Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195}>
-                        {this.state.stageProgress === 0 ? <div /> : 
-                        <LinearProgress variant="determinate" value={(110/190) * (this.state.stageProgress -10)} />
-                        }
+                        <div className={classes.columnWide}>
+                            <FursuitTable fursuits={this.props.scoreboard.fursuitParticipations}
+                                stageProgress={this.state.stageProgress - 10}
+                            />
+                        </div>
                     </Grow>
-                </div>
-            </Grow>
+
+                </div> : null}
+
+
+                <Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195}>
+                    {this.state.stageProgress === 0 ? <div /> :
+                        <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} />
+                    }
+                </Grow>
+            </div>
         );
     }
 }

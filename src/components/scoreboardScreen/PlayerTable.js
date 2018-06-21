@@ -11,7 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     tableCellHeader: {
         padding: '1.8vh',
-        fontSize: '2.5vh'
+        fontSize: '2.5vh',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.getContrastText( theme.palette.primary.main ),        
     },
     tableRow: {
         height: 'auto',
@@ -21,6 +23,10 @@ const styles = theme => ({
         ...theme.typography.body1,
         fontSize: '2.5vh'
     },
+    primary: {
+        backgroundColor: theme.palette.primary.light,
+        color: theme.palette.getContrastText( theme.palette.primary.light ),        
+    },    
     image: {
         width: '100%'
     },
@@ -29,7 +35,6 @@ const styles = theme => ({
         textAlign: 'center'
     },
     big: {
-        ...theme.typography.body1,
         fontSize: '2.5vh',
         fontWeight: 'bold'
     },
@@ -56,7 +61,7 @@ class PlayerTable extends Component {
                         {this.props.players.map((item, key) => (
                             <Fade key={key} in={(this.props.stageProgress) > 0} timeout={{enter: key * 200}}>
                                 <TableRow key={key} className={classes.tableRow}>
-                                    <TableCell className={`${classes.tableCell} ${classes.center}`}>
+                                    <TableCell className={`${classes.tableCell} ${classes.center} ${classes.primary}`}>
                                         <div className={classes.big}>{item.Rank}</div>
                                     </TableCell>
                                     <TableCell className={classes.tableCell}>
