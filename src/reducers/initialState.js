@@ -11,7 +11,8 @@ export default {
         tokenValidUntil: null
     },
     ui: {
-        theme: 'light'
+        theme: 'light',
+        borderless: false
     },
     game: {
         state: gameStates.GAMESTATE_INITIALIZING,

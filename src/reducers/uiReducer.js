@@ -8,6 +8,8 @@ export default function uiReducer(state = initialState.ui, action) {
             return Object.assign({}, state, { theme: "dark" });
         case actionTypes.UI_SET_LIGHT_THEME:
             return Object.assign({}, state, { theme: "light" });
+        case actionTypes.UI_SET_BORDERLESS:
+            return Object.assign({}, state, { borderless: action.value });
         default:
             return state;
     }

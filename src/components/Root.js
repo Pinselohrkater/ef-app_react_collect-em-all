@@ -44,13 +44,16 @@ function mapDispatchToProps(dispatch) {
     return {
         uiActions: bindActionCreators(uiActions, dispatch),
         loginActions: bindActionCreators(loginActions, dispatch),
-
     };
 }
 
 
 class Root extends Component {
 
+    constructor(props){
+        super(props);
+        props.uiActions.setBorderless(false);
+    }
 
     componentWillMount() {
         this.updateStateAndBackground(this.props);
@@ -60,18 +63,17 @@ class Root extends Component {
         theme: lightTheme
     }
 
-    updateStateAndBackground(props)
-    {
+    updateStateAndBackground(props) {
         let theme = (props.ui.theme === "dark") ? darkTheme : lightTheme;
         this.setState({ theme });
         document.body.style.backgroundColor = theme.palette.background.default;
         document.body.style.color = theme.palette.text.primary;
     }
-    
+
     componentWillReceiveProps(nextProps) {
         this.updateStateAndBackground(nextProps);
     }
-    
+
 
     render() {
         const { classes } = this.props;
@@ -79,17 +81,22 @@ class Root extends Component {
 
         return (
             <MuiThemeProvider theme={this.state.theme}>
-            <Menu 
-                login={this.props.login}
-                loginActions={this.props.loginActions}
-                theme={this.props.ui.theme}
-                setDarkTheme={() => this.props.uiActions.setDarkTheme()}
-                setLightTheme={() => this.props.uiActions.setLightTheme()}
-            />
-            <div className={classes.layout}>
-                {this.props.children}
-            </div>
-            <Footer />
+                {this.props.ui.borderless ? <div>
+                    {this.props.children}
+                </div> : <div>
+
+                        <Menu
+                            login={this.props.login}
+                            loginActions={this.props.loginActions}
+                            theme={this.props.ui.theme}
+                            setDarkTheme={() => this.props.uiActions.setDarkTheme()}
+                            setLightTheme={() => this.props.uiActions.setLightTheme()}
+                        />
+                        <div className={classes.layout}>
+                            {this.props.children}
+                        </div>
+                        <Footer />
+                    </div>}
             </MuiThemeProvider>
         );
     }
