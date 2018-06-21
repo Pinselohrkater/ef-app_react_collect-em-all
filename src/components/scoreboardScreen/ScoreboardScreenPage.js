@@ -96,17 +96,9 @@ const styles = theme => ({
         right: '5vw',
         top: '10vh',
         bottom: '2vh',
-    },
-    heading: {
-        ...theme.typography.title,
-    },
-    subheading: {
-        ...theme.typography.subheading,
-        color: theme.palette.primary.light,
-        marginTop: theme.spacing.unit * 3,
-        fontWeight: theme.typography.fontWeightMedium
     }
 });
+
 
 
 
@@ -114,8 +106,9 @@ class ScoreboardScreenPage extends Component {
 
 
     state = {
-        stageProgress: 30,
-        stage: 0
+        stageProgress: 0,
+        stage: 0,
+        skipAnimation: false
     }
 
     constructor(props) {
@@ -127,6 +120,11 @@ class ScoreboardScreenPage extends Component {
 
 
     componentWillMount() {
+        if (this.props.location.search.indexOf("skip-animation") > -1) {
+            this.setState({skipAnimation: true});
+        }
+
+
         let mockPlayerList = [];
         for (var i = 0; i < 80; i++) {
             mockPlayerList.push({
@@ -175,55 +173,57 @@ class ScoreboardScreenPage extends Component {
         this.setState(state);
     }
 
+    OptionalAnimation = (props) => {
+        if (this.state.skipAnimation) {
+            return props.children;
+        } else {
+            return React.cloneElement(props.animation, { children: props.children });
+        }
+    }
+
     render() {
         const { classes } = this.props;
+        const OptionalAnimation = this.OptionalAnimation;
+        //const Foo = this.OptionalAnim;
 
         return (
             <div className={classes.layout}>
 
-                {/* <div className={classes.heading}>Leaderboard</div>
-
-                    {JSON.stringify(this.state)}
-
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        onClick={() => this.props.scoreboardActions.updateScoreboard()}
-                    >Back</Button> */}
-
                 <div className={classes.titleRight}>
                     Collect'em All! - Leaderboard<br />
                     <div className={classes.subTitle}>Join the game! - <b>Go to app.eurofurence.org</b></div>
+                    
                 </div>
 
                 {this.state.stage === 0 ? <div>
-
-                    <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                    <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
                         <div className={classes.titleLeft}>
                             Top Players
-                            </div>
-                    </Slide>
+                        </div>
+                    </OptionalAnimation>
 
 
                     <div className={classes.columnLeft}>
-                        <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                        <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
                             <Paper elevation={10} className={classes.paper}>
                                 <PlayerTable players={this.props.scoreboard.playerParticipations.slice(0, 10)}
                                     stageProgress={this.state.stageProgress - 10}
+                                    optionalAnimation={this.OptionalAnimation}
                                 />
                             </Paper>
-                        </Slide>
+                        </OptionalAnimation>
                     </div>
                     {this.props.scoreboard.playerParticipations.length > 10 ? <div>
 
                         <div className={classes.columnRight}>
-                            <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'left'}>
+                            <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'left'} />}>
                                 <Paper elevation={10} className={classes.paper}>
                                     <PlayerTable players={this.props.scoreboard.playerParticipations.slice(10, 20)}
                                         stageProgress={this.state.stageProgress - 18}
+                                        optionalAnimation={this.OptionalAnimation}
                                     />
                                 </Paper>
-                            </Slide>
+                            </OptionalAnimation>
                         </div>
                     </div> : null}
 
@@ -232,28 +232,30 @@ class ScoreboardScreenPage extends Component {
                 {this.state.stage === 1 ? <div>
 
 
-                    <Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'}>
+                    <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
                         <div className={classes.titleLeft}>
                             Top Creatures
                             </div>
-                    </Slide>
+                    </OptionalAnimation>
 
-                    <Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195}>
+                    <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
                         <div className={classes.columnWide}>
                             <FursuitTable fursuits={this.props.scoreboard.fursuitParticipations}
                                 stageProgress={this.state.stageProgress - 10}
+                                optionalAnimation={this.OptionalAnimation}
                             />
                         </div>
-                    </Grow>
+                    </OptionalAnimation>
 
                 </div> : null}
 
 
-                <Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195}>
-                    {this.state.stageProgress === 0 ? <div /> :
+
+                <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
+                    {this.state.skipAnimation || this.state.stageProgress === 0 ? <div /> :
                         <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} />
                     }
-                </Grow>
+                </OptionalAnimation>
             </div>
         );
     }

@@ -47,6 +47,8 @@ const styles = theme => ({
 class PlayerTable extends Component {
     render() {
         const { classes } = this.props;
+        const OptionalAnimation = this.props.optionalAnimation;
+        
         return (
             <div>
                 <Table>
@@ -59,7 +61,7 @@ class PlayerTable extends Component {
                     </TableHead>
                     <TableBody>
                         {this.props.players.map((item, key) => (
-                            <Fade key={key} in={(this.props.stageProgress) > 0} timeout={{enter: key * 200}}>
+                            <OptionalAnimation animation={<Fade key={key} in={(this.props.stageProgress) > 0} timeout={{enter: key * 200}} />}>
                                 <TableRow key={key} className={classes.tableRow}>
                                     <TableCell className={`${classes.tableCell} ${classes.center} ${classes.primary}`}>
                                         <div className={classes.big}>{item.Rank}</div>
@@ -71,7 +73,7 @@ class PlayerTable extends Component {
                                         {item.CollectionCount}
                                     </TableCell>
                                 </TableRow>
-                            </Fade>
+                            </OptionalAnimation>
                         ))}
                     </TableBody>
                 </Table>

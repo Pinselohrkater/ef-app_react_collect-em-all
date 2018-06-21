@@ -55,26 +55,26 @@ class ScoreboardPage extends Component {
 
                     <div className={classes.heading}>Leaderboard</div>
 
-<Grow in={true}>
-<div>
-                    <div className={classes.subheading}>Players</div>
-                    <PlayerList items={this.props.scoreboard.playerParticipations} />
-                    </div>
+                    <Grow in={true}>
+                        <div>
+                            <div className={classes.subheading}>Players</div>
+                            <PlayerList items={this.props.scoreboard.playerParticipations} />
+                        </div>
 
-</Grow>
-<Grow in={true}>
-<div>
-<div className={classes.subheading}>Fursuits</div>
-                    <FursuitList items={this.props.scoreboard.fursuitParticipations} />
-    
-    </div></Grow>
+                    </Grow>
+                    <Grow in={true}>
+                        <div>
+                            <div className={classes.subheading}>Fursuits</div>
+                            <FursuitList items={this.props.scoreboard.fursuitParticipations} />
+
+                        </div></Grow>
 
                     <Button
-                                fullWidth
-                                variant="contained"
-                                onClick={() => this.props.history.replace('/')}
-                                >Back</Button>
-                </div> }
+                        fullWidth
+                        variant="contained"
+                        onClick={() => this.props.history.replace('/')}
+                    >Back</Button>
+                </div>}
             </div>
         );
     }

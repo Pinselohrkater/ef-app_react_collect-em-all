@@ -123,10 +123,11 @@ const styles = theme => ({
 class FursuitTable extends Component {
     render() {
         const { classes } = this.props;
+        const OptionalAnimation = this.props.optionalAnimation;
         return (
             <div className={classes.badgeContainer}>
                 {this.props.fursuits.slice(0,18).map((item, key) => (
-                    <Grow key={key} in={(this.props.stageProgress - (key / 2) > 0)}>
+                    <OptionalAnimation animatoin={<Grow key={key} in={(this.props.stageProgress - (key / 2) > 0)} />}>
                         <div className={classes.badgeWrapper}>
                             <Paper className={classes.badge}>
                                 <div className={classes.portraitWrapper}>
@@ -156,7 +157,7 @@ class FursuitTable extends Component {
 
                             </Paper>
                         </div>
-                    </Grow>
+                    </OptionalAnimation>
                 ))}
             </div>
         );
