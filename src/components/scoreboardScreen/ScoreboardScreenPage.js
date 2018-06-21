@@ -120,10 +120,7 @@ class ScoreboardScreenPage extends Component {
 
 
     componentWillMount() {
-        if (this.props.location.search.indexOf("skip-animation") > -1) {
-            this.setState({ skipAnimation: true });
-        }
-
+        this.parseFlags(this.props);
 
         let mockPlayerList = [];
         for (var i = 0; i < 80; i++) {
@@ -149,8 +146,16 @@ class ScoreboardScreenPage extends Component {
         this.setState({ mockPlayerList, mockFursuitList });
     }
 
+    parseFlags(props) {
+        this.setState({ skipAnimation: (props.location.search.indexOf("skip-animation") > -1) });
+    }
+
     componentDidMount() {
         this.schedule();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.parseFlags(nextProps);
     }
 
     schedule = () => {
