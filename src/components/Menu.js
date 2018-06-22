@@ -91,7 +91,7 @@ class MenuBar extends Component {
                     <AccountCircle />
                   </ListItemIcon>
                   <ListItemText>
-                    Logout ({this.props.login.username})
+                    Logout {this.props.login.username}
                 </ListItemText>
 
                 </MenuItem>
