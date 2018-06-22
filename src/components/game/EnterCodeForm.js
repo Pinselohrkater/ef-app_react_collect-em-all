@@ -56,7 +56,8 @@ class EnterCodeForm extends Component {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault();
         if (this.props.onSubmit != null)
             this.props.onSubmit(this.state.token);
     }
@@ -93,36 +94,38 @@ class EnterCodeForm extends Component {
 
                         </Grid>
                     </Grow>
-                    <Grow in={true} timeout={{ enter:200 }}>
-                        <Grid container alignItems="center" spacing={16}>
-                            <Grid item xs={12}>
-                                <div className={classes.subheading}>
-                                    Catch
+                    <Grow in={true} timeout={{ enter: 200 }}>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <Grid container alignItems="center" spacing={16}>
+                                <Grid item xs={12}>
+                                    <div className={classes.subheading}>
+                                        Catch
                             </div>
-                                <Typography variant="body1">
-                                    Discovered a new creature you'd like to add to your collection? Type their code (found on the sticker on the Fursuit Badge) here:
+                                    <Typography variant="body1">
+                                        Discovered a new creature you'd like to add to your collection? Type their code (found on the sticker on the Fursuit Badge) here:
                             </Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                    <TextField
+                                        id="token"
+                                        label="Token"
+                                        fullWidth
+                                        value={this.state.token}
+                                        helperText="6-digit code on Fursuit Badge"
+                                        onChange={this.handleChange('token')}
+                                        margin="normal"
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        fullWidth
+                                        type="submit"
+                                    >Collect</Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    id="token"
-                                    label="Token"
-                                    fullWidth
-                                    value={this.state.token}
-                                    helperText="6-digit code on Fursuit Badge"
-                                    onChange={this.handleChange('token')}
-                                    margin="normal"
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    fullWidth
-                                    onClick={() => this.handleSubmit()}
-                                >Collect</Button>
-                            </Grid>
-                        </Grid>
+                        </form>
                     </Grow>
                 </Grid>
 
