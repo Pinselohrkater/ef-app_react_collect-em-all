@@ -74,7 +74,8 @@ class LoginPage extends Component {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault();
         this.props.loginActions
             .sendCredentials(Number(this.state.regNo), this.state.username, this.state.password)
             .then(() => this.forwardToGameIfLoggedOn(this.props));
@@ -104,53 +105,55 @@ class LoginPage extends Component {
                     </Grow>
 
                     <Grow in={true} timeout={{ enter: 600 }}>
-                        <Paper className={classes.formPaper}>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <Paper className={classes.formPaper}>
 
-                            <Grid container spacing={16}>
-                                {this.props.login.isFailed ? <Grid item className={classes.error}>
-                                    Sorry - we couldn't log you in. Please check your credentials and try again.
+                                <Grid container spacing={16}>
+                                    {this.props.login.isFailed ? <Grid item className={classes.error}>
+                                        Sorry - we couldn't log you in. Please check your credentials and try again.
                             </Grid> : null}
 
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="name"
-                                        label="Nickname"
-                                        value={this.state.username}
-                                        onChange={this.handleChange('username')}
-                                        fullWidth
-                                        margin="normal"
-                                    />
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            id="name"
+                                            label="Nickname"
+                                            value={this.state.username}
+                                            onChange={this.handleChange('username')}
+                                            fullWidth
+                                            margin="normal"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            id="name"
+                                            label="Registration Number"
+                                            value={this.state.regNo}
+                                            onChange={this.handleChange('regNo')}
+                                            fullWidth
+                                            margin="normal"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            id="name"
+                                            label="Password"
+                                            value={this.state.password}
+                                            onChange={this.handleChange('password')}
+                                            fullWidth
+                                            type="password"
+                                            margin="normal"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            fullWidth
+                                            type="submit">Login</Button>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="name"
-                                        label="Registration Number"
-                                        value={this.state.regNo}
-                                        onChange={this.handleChange('regNo')}
-                                        fullWidth
-                                        margin="normal"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="name"
-                                        label="Password"
-                                        value={this.state.password}
-                                        onChange={this.handleChange('password')}
-                                        fullWidth
-                                        type="password"
-                                        margin="normal"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        fullWidth
-                                        onClick={() => this.handleSubmit()}>Login</Button>
-                                </Grid>
-                            </Grid>
-                        </Paper>
+                            </Paper>
+                        </form>
                     </Grow>
 
 
