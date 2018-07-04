@@ -38,7 +38,8 @@ const styles = theme => ({
 
 function mapStateToProps(state) {
     return {
-        login: state.login
+        login: state.login,
+        ui: state.ui
     };
 }
 
@@ -93,68 +94,87 @@ class LoginPage extends Component {
                             Login
                         </div>
                     </Grow>
-                    <Grow in={true} timeout={{ enter: 300 }}>
-                        <div className={classes.loginRequest}>
-                            Please log in with your credentials for the Eurofurence Registration System.
-                    </div>
-                    </Grow>
-                    <Grow in={true} timeout={{ enter: 450 }}>
-                        <div className={classes.loginHelp}>
-                            If you do not have access to them, come to our ConOps or Security office. They can help you with an alternative login. Please bring your badge and a valid legal form of identification.
-                    </div>
-                    </Grow>
 
-                    <Grow in={true} timeout={{ enter: 600 }}>
-                        <form onSubmit={(e) => this.handleSubmit(e)}>
-                            <Paper className={classes.formPaper}>
+                    {this.props.ui.allowLogin ? <div>
+                        <Grow in={true} timeout={{ enter: 300 }}>
+                            <div className={classes.loginRequest}>
+                                Please log in with your credentials for the Eurofurence Registration System.
+                    </div>
+                        </Grow>
+                        <Grow in={true} timeout={{ enter: 450 }}>
+                            <div className={classes.loginHelp}>
+                                If you do not have access to them, come to our ConOps or Security office. They can help you with an alternative login. Please bring your badge and a valid legal form of identification.
+                            </div>
+                        </Grow>
 
-                                <Grid container spacing={16}>
-                                    {this.props.login.isFailed ? <Grid item className={classes.error}>
-                                        Sorry - we couldn't log you in. Please check your credentials and try again.
+                        <Grow in={true} timeout={{ enter: 600 }}>
+                            <form onSubmit={(e) => this.handleSubmit(e)}>
+                                <Paper className={classes.formPaper}>
+
+                                    <Grid container spacing={16}>
+                                        {this.props.login.isFailed ? <Grid item className={classes.error}>
+                                            Sorry - we couldn't log you in. Please check your credentials and try again.
                             </Grid> : null}
 
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            id="name"
-                                            label="Nickname"
-                                            value={this.state.username}
-                                            onChange={this.handleChange('username')}
-                                            fullWidth
-                                            margin="normal"
-                                        />
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                id="name"
+                                                label="Nickname"
+                                                value={this.state.username}
+                                                onChange={this.handleChange('username')}
+                                                fullWidth
+                                                margin="normal"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                id="name"
+                                                label="Registration Number"
+                                                value={this.state.regNo}
+                                                onChange={this.handleChange('regNo')}
+                                                fullWidth
+                                                margin="normal"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                id="name"
+                                                label="Password"
+                                                value={this.state.password}
+                                                onChange={this.handleChange('password')}
+                                                fullWidth
+                                                type="password"
+                                                margin="normal"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                fullWidth
+                                                type="submit">Login</Button>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            id="name"
-                                            label="Registration Number"
-                                            value={this.state.regNo}
-                                            onChange={this.handleChange('regNo')}
-                                            fullWidth
-                                            margin="normal"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            id="name"
-                                            label="Password"
-                                            value={this.state.password}
-                                            onChange={this.handleChange('password')}
-                                            fullWidth
-                                            type="password"
-                                            margin="normal"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Button
-                                            color="primary"
-                                            variant="contained"
-                                            fullWidth
-                                            type="submit">Login</Button>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
-                        </form>
-                    </Grow>
+                                </Paper>
+                            </form>
+                        </Grow>
+
+                    </div> : <div>
+
+                            <div className={classes.loginRequest}>
+                                Please log in directly in the Eurofurence app if you wish to participate.
+                                </div>
+                            <div className={classes.loginHelp}>
+                                You can view the current leaderboards without logging on.
+                            </div>
+
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={() => this.props.history.push('scoreboard')}
+                                >View Leaderboards</Button>
+
+                        </div>}
 
 
 

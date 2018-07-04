@@ -85,18 +85,20 @@ class MenuBar extends Component {
                 </ListItemText>
               </MenuItem>
 
-              {this.props.login.isLoggedOn ?
-                <MenuItem onClick={() => { this.props.loginActions.logout(); this.handleClose(); }}>
-                  <ListItemIcon>
-                    <AccountCircle />
-                  </ListItemIcon>
-                  <ListItemText>
-                    Logout {this.props.login.username}
-                </ListItemText>
+              {this.props.allowLogin ? <div>
+                {this.props.login.isLoggedOn ?
+                  <MenuItem onClick={() => { this.props.loginActions.logout(); this.handleClose(); }}>
+                    <ListItemIcon>
+                      <AccountCircle />
+                    </ListItemIcon>
+                    <ListItemText>
+                      Logout {this.props.login.username}
+                    </ListItemText>
 
-                </MenuItem>
-                : null
-              }
+                  </MenuItem>
+                  : null
+                }
+              </div> : null}
 
 
             </Menu>

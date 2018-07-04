@@ -11,3 +11,11 @@ export function setLightTheme() {
 export function setBorderless(value) {
     return { type: types.UI_SET_BORDERLESS, value }
 }
+
+export function setEmbedded(value) {
+    return { type: types.UI_SET_EMBEDDED, value }
+}
+
+export function setAllowLogin(value) {
+    return { type: types.UI_SET_ALLOW_LOGIN, value }
+}

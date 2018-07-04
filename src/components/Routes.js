@@ -12,7 +12,7 @@ class Routes extends Component {
         return (
             <div>
                 <Switch>
-                    <Route exact path='/token-:token' component={InitializeWithTokenPage} />
+                    <Route exact path='/token-:token/:embedded?' component={InitializeWithTokenPage} />
                     <Route exact path='/login' component={LoginPage} />
                     <Route exact path='/collect' component={GamePage} />
                     <Route exact path='/scoreboard' component={ScoreboardPage} />

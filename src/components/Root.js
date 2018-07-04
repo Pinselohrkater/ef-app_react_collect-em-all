@@ -50,9 +50,11 @@ function mapDispatchToProps(dispatch) {
 
 class Root extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         props.uiActions.setBorderless(false);
+        props.uiActions.setEmbedded(false);
+        props.uiActions.setAllowLogin(true);
     }
 
     componentWillMount() {
@@ -85,13 +87,17 @@ class Root extends Component {
                     {this.props.children}
                 </div> : <div>
 
-                        <Menu
-                            login={this.props.login}
-                            loginActions={this.props.loginActions}
-                            theme={this.props.ui.theme}
-                            setDarkTheme={() => this.props.uiActions.setDarkTheme()}
-                            setLightTheme={() => this.props.uiActions.setLightTheme()}
-                        />
+                        {this.props.ui.embedded ? null :
+                            <Menu
+                                login={this.props.login}
+                                loginActions={this.props.loginActions}
+                                theme={this.props.ui.theme}
+                                setDarkTheme={() => this.props.uiActions.setDarkTheme()}
+                                setLightTheme={() => this.props.uiActions.setLightTheme()}
+                                allowLogin={this.props.ui.allowLogin}
+                            />
+                        }
+
                         <div className={classes.layout}>
                             {this.props.children}
                         </div>

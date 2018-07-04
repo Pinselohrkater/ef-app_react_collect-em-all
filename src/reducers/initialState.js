@@ -12,7 +12,9 @@ export default {
     },
     ui: {
         theme: 'light',
-        borderless: false
+        borderless: false,
+        embedded: false,
+        allowLogin: true
     },
     game: {
         state: gameStates.GAMESTATE_INITIALIZING,

@@ -10,6 +10,10 @@ export default function uiReducer(state = initialState.ui, action) {
             return Object.assign({}, state, { theme: "light" });
         case actionTypes.UI_SET_BORDERLESS:
             return Object.assign({}, state, { borderless: action.value });
+        case actionTypes.UI_SET_EMBEDDED:
+            return Object.assign({}, state, { embedded: action.value });
+        case actionTypes.UI_SET_ALLOW_LOGIN:
+            return Object.assign({}, state, { allowLogin: action.value });
         default:
             return state;
     }
