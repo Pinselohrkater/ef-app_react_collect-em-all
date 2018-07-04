@@ -32,6 +32,7 @@ class InitializeWithTokenPage extends Component {
         }
 
         if (props.match.params.token === "empty") {
+            props.loginActions.logout();
             props.history.replace("/login");
         } else {
             this.props.loginActions.verifyToken(props.match.params.token)
