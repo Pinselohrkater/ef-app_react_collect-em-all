@@ -56,10 +56,17 @@ const styles = theme => ({
         left: '5vw',
         width: '42.5vw',
         top: '3vh',
-        height: '5vh',
         ...theme.typography.title,
+    },
+    landscape_titleLeft: {
         fontSize: '4vh',
         fontWeight: '100',
+        height: '5vh',
+    },
+    portrait_titleLeft: {
+        fontSize: '4vw',
+        fontWeight: '100',
+        height: '5vw',
     },
     titleRight: {
         position: 'absolute',
@@ -67,11 +74,18 @@ const styles = theme => ({
         right: '5vw',
         width: '42.5vw',
         top: '3vh',
-        height: '5vh',
         ...theme.typography.title,
         fontWeight: '100',
+    },
+    landscape_titleRight: {
         fontSize: '3vh',
-        lineHeight: '2.5vh'
+        lineHeight: '2.5vh',
+        height: '5vh',
+    },
+    portrait_titleRight: {
+        fontSize: '3vw',
+        lineHeight: '2.5vw',
+        height: '5vw',
     },
     subTitle: {
         fontSize: '0.6em'
@@ -96,6 +110,9 @@ const styles = theme => ({
         right: '5vw',
         top: '10vh',
         bottom: '2vh',
+    },
+    portrait_columnWide: {
+        top: '8vh'
     }
 });
 
@@ -108,7 +125,9 @@ class ScoreboardScreenPage extends Component {
     state = {
         stageProgress: 0,
         stage: 0,
-        skipAnimation: false
+        skipAnimation: false,
+        width: 0,
+        height: 0
     }
 
     constructor(props) {
@@ -116,6 +135,8 @@ class ScoreboardScreenPage extends Component {
         props.scoreboardActions.updateScoreboard();
         props.uiActions.setBorderless(true);
         props.uiActions.setLightTheme();
+
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
 
@@ -146,12 +167,22 @@ class ScoreboardScreenPage extends Component {
         this.setState({ mockPlayerList, mockFursuitList });
     }
 
-    parseFlags(props) {
-        this.setState({ skipAnimation: (props.location.search.indexOf("skip-animation") > -1) });
+    updateWindowDimensions() {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
 
     componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
         this.schedule();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    parseFlags(props) {
+        this.setState({ skipAnimation: (props.location.search.indexOf("skip-animation") > -1) });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -189,48 +220,70 @@ class ScoreboardScreenPage extends Component {
     render() {
         const { classes } = this.props;
         const OptionalAnimation = this.OptionalAnimation;
-        //const Foo = this.OptionalAnim;
+
+        const classPrefix = this.state.width < this.state.height ? "portrait" : "landscape";
+        const prefix = (classes, className) => `${classes[className]} ${classes[classPrefix + '_' + className]}`;
 
         return (
             <div className={classes.layout}>
 
-                <div className={classes.titleRight}>
+                <div className={prefix(classes, 'titleRight')}>
                     Collect'em All! - Leaderboard<br />
                     <div className={classes.subTitle}>Join the game! - <b>Go to app.eurofurence.org</b></div>
-
                 </div>
 
                 {this.state.stage === 0 ? <div>
                     <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
-                        <div className={classes.titleLeft}>
+                        <div className={prefix(classes, 'titleLeft')}>
                             Top Players
                         </div>
                     </OptionalAnimation>
 
 
-                    <div className={classes.columnLeft}>
-                        <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
-                            <Paper elevation={10} className={classes.paper}>
-                                <PlayerTable players={this.props.scoreboard.playerParticipations.slice(0, 10)}
-                                    stageProgress={this.state.stageProgress - 10}
-                                    optionalAnimation={this.OptionalAnimation}
-                                />
-                            </Paper>
-                        </OptionalAnimation>
-                    </div>
-                    {this.props.scoreboard.playerParticipations.length > 10 ? <div>
+                    {this.state.width > this.state.height ? <div>
 
-                        <div className={classes.columnRight}>
-                            <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'left'} />}>
+                        <div className={classes.columnLeft}>
+                            <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
                                 <Paper elevation={10} className={classes.paper}>
-                                    <PlayerTable players={this.props.scoreboard.playerParticipations.slice(10, 20)}
-                                        stageProgress={this.state.stageProgress - 18}
+                                    <PlayerTable players={this.props.scoreboard.playerParticipations.slice(0, 10)}
+                                        stageProgress={this.state.stageProgress - 10}
                                         optionalAnimation={this.OptionalAnimation}
                                     />
                                 </Paper>
                             </OptionalAnimation>
                         </div>
-                    </div> : null}
+                        {this.props.scoreboard.playerParticipations.length > 10 ? <div>
+
+                            <div className={classes.columnRight}>
+                                <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'left'} />}>
+                                    <Paper elevation={10} className={classes.paper}>
+                                        <PlayerTable players={this.props.scoreboard.playerParticipations.slice(10, 20)}
+                                            stageProgress={this.state.stageProgress - 18}
+                                            optionalAnimation={this.OptionalAnimation}
+                                        />
+                                    </Paper>
+                                </OptionalAnimation>
+                            </div>
+                        </div> : null}
+
+                    </div> : <div>
+
+
+                            <div className={prefix(classes, 'columnWide')}>
+                                <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
+                                    <Paper elevation={10} className={classes.paper}>
+                                        <PlayerTable players={this.props.scoreboard.playerParticipations.slice(0, 20)}
+                                            stageProgress={this.state.stageProgress - 10}
+                                            optionalAnimation={this.OptionalAnimation}
+                                            portrait={true}
+
+                                        />
+                                    </Paper>
+                                </OptionalAnimation>
+                            </div>
+
+
+                        </div>}
 
                 </div> : null}
 
@@ -238,16 +291,17 @@ class ScoreboardScreenPage extends Component {
 
 
                     <OptionalAnimation animation={<Slide in={this.state.stageProgress > 5 && this.state.stageProgress < 195} direction={'right'} />}>
-                        <div className={classes.titleLeft}>
+                        <div className={prefix(classes, 'titleLeft')}>
                             Top Creatures
-                            </div>
+                        </div>
                     </OptionalAnimation>
 
                     <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
-                        <div className={classes.columnWide}>
+                        <div className={prefix(classes, 'columnWide')}>
                             <FursuitTable fursuits={this.props.scoreboard.fursuitParticipations}
                                 stageProgress={this.state.stageProgress - 10}
                                 optionalAnimation={this.OptionalAnimation}
+                                portrait={this.state.width < this.state.height}
                             />
                         </div>
                     </OptionalAnimation>
@@ -258,7 +312,7 @@ class ScoreboardScreenPage extends Component {
 
                 {this.state.skipAnimation || this.state.stageProgress === 0 ? null :
                     <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
-                        <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} />
+                        <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} style={{ height: this.state.width > this.state.height ? '1vw' : '1vh' }} />
                     </OptionalAnimation>
                 }
             </div>
