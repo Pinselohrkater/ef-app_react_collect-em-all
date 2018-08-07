@@ -75,15 +75,17 @@ class EnterCodeForm extends Component {
                             <Grid item xs={12}>
                                 <div className={classes.heading}>
                                     Hi {pp.name}!
-                            </div>
-
-
+                                </div>
                                 <div className={classes.subheading}>
                                     Your Statistics
-                            </div>
+                                </div>
                                 <div className={classes.body}>
-                                    You caught <b>{pp.collectionCount}</b> creatures so far, and are currently on rank <b>{pp.scoreboardRank}</b> on the leaderboard.
-                            </div>
+                                    {pp.collectionCount > 0 ? <span>
+                                        You caught <b>{pp.collectionCount}</b> creatures so far, and are currently on rank <b>{pp.scoreboardRank}</b> on the leaderboard.
+                                    </span> : <span>
+                                        Your rank on the leaderboard will be determined after collecting your first creature.
+                                    </span>}
+                                </div>
                                 <Button
                                     fullWidth
                                     variant="contained"
