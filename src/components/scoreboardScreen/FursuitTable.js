@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import { getApiUrl } from './../../consts/apiUrl';
 import { withStyles } from '@material-ui/core/styles';
@@ -181,7 +181,7 @@ class FursuitTable extends Component {
         return (
             <div className={prefix(classes, 'badgeContainer')}>
                 {this.props.fursuits.slice(0, this.props.portrait ? 20 : 18).map((item, key) => (
-                    <OptionalAnimation animation={<Grow key={key} in={(this.props.stageProgress - (key / 2) > 0)} />}>
+                    <OptionalAnimation animation={<Fade key={key} in={(this.props.stageProgress - (key / 2) > 0)} />}>
                         <div className={prefix(classes, 'badgeWrapper')}>
                             <Paper className={prefix(classes, 'badge')}>
                                 <div className={prefix(classes, 'portraitWrapper')}>

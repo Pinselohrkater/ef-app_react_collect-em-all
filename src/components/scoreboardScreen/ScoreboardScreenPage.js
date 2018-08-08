@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
 import FursuitTable from './FursuitTable';
-import Grow from '@material-ui/core/Grow';
+import Fade from '@material-ui/core/Fade';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import LoadingIndicator from '../shared/LoadingIndicator';
 import Paper from '@material-ui/core/Paper';
@@ -296,7 +296,7 @@ class ScoreboardScreenPage extends Component {
                         </div>
                     </OptionalAnimation>
 
-                    <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
+                    <OptionalAnimation animation={<Fade in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
                         <div className={prefix(classes, 'columnWide')}>
                             <FursuitTable fursuits={this.props.scoreboard.fursuitParticipations}
                                 stageProgress={this.state.stageProgress - 10}
@@ -311,7 +311,7 @@ class ScoreboardScreenPage extends Component {
 
 
                 {this.state.skipAnimation || this.state.stageProgress === 0 ? null :
-                    <OptionalAnimation animation={<Grow in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
+                    <OptionalAnimation animation={<Fade in={this.state.stageProgress > 5 && this.state.stageProgress < 195} />}>
                         <LinearProgress variant="determinate" value={(110 / 190) * (this.state.stageProgress - 10)} style={{ height: this.state.width > this.state.height ? '1vw' : '1vh' }} />
                     </OptionalAnimation>
                 }
